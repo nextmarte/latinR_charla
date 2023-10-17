@@ -1,0 +1,19 @@
+.title {
+    font-size: 60px !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+.date {
+    font-size: 25px;
+    color: rgb(255, 255, 255) !important;
+}
+
+.quarto-title-author-name {
+    font-size: 25px;
+    color: black !important;
+}
+
+:root {
+    --r-main-font-size: 25px;
+
+}

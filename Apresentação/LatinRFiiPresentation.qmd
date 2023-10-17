@@ -1,0 +1,123 @@
+---
+title: Análise de correlação cruzada das séries temporais de casos e mortes de COVID-19 e as variações de preço do IFIX
+subtitle: |
+    Programa de Pós-Graduação em Administração - UFF
+footer: "LatinR 2023"
+format:
+  revealjs: 
+    theme: moon
+css: style.css
+date: today
+logo: images\logo.png
+bibliography: referencias.bib
+csl: apa.csl
+---
+
+# Autores:
+
+::: columns
+::: {.column width="25%"}
+![Marcus Ramalho\
+PPGAd - UFF](images/Marcus.png){fig-align="left" width="250"}
+:::
+
+::: {.column width="25%"}
+![Beatriz Bertolino\
+ADM - UFF](images/Beatriz.png){fig-align="center" width="250"}
+:::
+
+::: {.column width="25%"}
+![Ariel Levy\
+PPGAd - UFF](images/Ariel.jpg){fig-align="right" width="250"}
+:::
+:::
+
+## Introdução
+
+-   O **IFIX** é um índice de referência para o mercado de fundos de investimento imobiliário (FII) negociados na B3. É composto por uma carteira teórica de ativos.
+
+-   **Contexto** da pandemia de COVID-19 e seus impactos no mercado financeiro.
+
+-   **Objetivo**: analisar a correlação cruzada entre as séries temporais de casos e mortes de COVID-19 e as variações de preço do IFIX.
+
+## Metodologia
+
+-   Obter as séries temporais de interesse na janela de 2020 - 2023.
+-   Calcular a correlação cruzada entre as séries temporais usando o rhoDCCA[@zebende2011] através do pacote DCCA[@prass2020].
+-   Analisar as correlações ao longo do tempo.
+
+## Obtenção dos dados
+
+-   Casos e mortes de COVID-19 no Brasil e no mundo com a covid19api[@covid192023].
+-   Vacinação no Brasil com a API do Ministério da Saúde.
+-   Preços do IFIX com os dados abertos da B3 através do ProfitPro[@nelogica2023].
+
+```{r}
+#| echo: true
+library(httr)
+library(jsonlite)
+
+get_covid_data <- function(country) {
+    # Cria a URL para a API da covid19api.com usando o nome do país recebido como argumento
+    url <- paste0("https://api.covid19api.com/country/", country)
+
+    # Envia uma solicitação HTTP GET para a API usando a URL criada acima e armazena a resposta em 'response'
+    response <- httr::GET(url)
+
+    # Converte a resposta da API em um formato legível por R usando o pacote 'jsonlite' e armazena os dados em 'data'
+    data <- jsonlite::fromJSON(httr::content(response, as = "text"))
+
+    # Filtra as colunas relevantes dos dados usando o pacote 'dplyr', incluindo data, latitude, longitude, casos confirmados, mortes, recuperados e casos ativos
+    data <- data %>%
+        select(Date, Lat, Lon, Confirmed, Deaths, Recovered, Active) %>%
+        arrange(Date) # Classifica os dados em ordem crescente de data
+
+    # Retorna os dados filtrados e classificados
+    return(data)
+}
+
+```
+
+## $\rho_{\text{DCCA}}$
+
+-   O rhoDCCA é uma medida de correlação cruzada entre duas séries temporais.
+
+$\rho_{\text{DCCA}}(s)=\frac{F^2_{xy}(s)}{F_{xx}(s)F_{yy}(s)}$ [@zebende2011]
+
+-   É parecido com o coeficiente de correlação de Pearson, mas é mais adequado para séries temporais não estacionárias.
+
+-   O valor de $\rho_{\text{DCCA}}$ varia entre -1 e 1, onde -1 indica uma correlação negativa perfeita, 0 indica ausência de correlação e 1 indica uma correlação positiva perfeita.
+
+## Opções para análise de correlação cruzada
+
+-   DCCA[@prass2020] (Desenvolvido em Fortran) - Recomendado
+-   DFA[@mesquita2020] (Desenvolvido com R) - Apesar de ser mais lento, é relativamente mais fácil de usar
+-   fractalRegression [@Fractal2023] (não testado, Desenvolvido em C++)
+-   fractal(deprecado)
+
+## Resultados
+
+::: columns
+
+::: {.column width="50%"}
+
+![](images/paste-3.png)
+
+:::
+
+::: {.column width="50%"}
+
+![](images/paste-2.png)
+
+:::
+
+
+:::
+
+## Conclusões e Oportunidades de pesquisa
+
+-   A análise de correlação cruzada pode ser usada para identificar a existência de uma relação entre duas séries temporais.
+-   Investigar outras variáveis que possam estar relacionadas com as variações de preço do IFIX durante a pandemia.
+-   Uso dos pacotes citados como dependências para outros pacotes R, principalmente o DCCA que é escrito em Fortran e traz uma performance superior em termos de velocidade de computação.
+
+## Referências

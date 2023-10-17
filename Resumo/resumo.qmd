@@ -1,0 +1,33 @@
+---
+title: "Pacotes da linguagem R para análise de pesquisas realizadas com escala Likert"
+documentclass: article
+authors: 
+    - name: Ariel Levy
+      affiliations: 
+        - name: Universidade Federal Fluminense
+    - name: Beatriz Bertolino
+      affiliations: 
+        - name: Universidade Federal Fluminense
+    - name: Marcus Antonio Cardoso Ramalho
+      affiliations: 
+        - name: Universidade Federal Fluminense
+format: pdf
+abstract: |
+      ""
+---
+
+<!---
+ Olá! Sugiro aceitar o trabalho apenas se forem realizadas mudanças maiores. Essas mudanças estão relacionadas a reescrever o resumo no formato estipulado de duas folhas e enfatizar como o uso de R ajuda na análise de séries temporais no contexto de COVID-19 e variações do preço IFIX. É importante descrever uma metodologia detalhada, indicando quais funções (pacotes) são utilizados em cada etapa da análise de dados e quais são seus objetivos específicos. Além disso, é necessário abordar a aplicação da perspectiva do uso de R e seus aspectos computacionais. Muito obrigada!
+
+
+## resumo
+
+<!---
+ this is how to justify text in latex
+
+--->
+::: texto
+::: { style="text-align: justify;"}
+
+:::
+:::
